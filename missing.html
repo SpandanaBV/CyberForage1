@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Person Search</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a1128;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        form {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input, button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        button.search-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.search-button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .result-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Structure -->
+    <header>
+        <h1>Missing Person Search</h1>
+        <p>Search for and reconnect with missing loved ones after a disaster.</p>
+    </header>
+    <main>
+        <form id="searchForm">
+            <label for="name">Enter Full Name:</label>
+            <input type="text" id="name" placeholder="Enter the name of the missing person" required>
+
+            <label for="location">Last Known Location:</label>
+            <input type="text" id="location" placeholder="Enter the last known location" required>
+
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        <div id="results" class="results"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Disaster Management Platform</p>
+    </footer>
+
+    <script>
+        // JavaScript Interactivity
+        const searchForm = document.getElementById('searchForm');
+        const resultsDiv = document.getElementById('results');
+
+        // Sample data for testing
+        const missingPersons = [
+            { name: "John Doe", location: "New York", status: "Found and safe." },
+            { name: "Jane Smith", location: "California", status: "Still missing." },
+            { name: "Samuel Green", location: "Texas", status: "Found and reunited." },
+        ];
+
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get input values
+            const name = document.getElementById('name').value.toLowerCase();
+            const location = document.getElementById('location').value.toLowerCase();
+
+            // Clear previous results
+            resultsDiv.innerHTML = "";
+
+            // Search logic
+            const results = missingPersons.filter(person => 
+                person.name.toLowerCase().includes(name) &&
+                person.location.toLowerCase().includes(location)
+            );
+
+            // Display results
+            if (results.length > 0) {
+                results.forEach(person => {
+                    const resultItem = document.createElement('div');
+                    resultItem.classList.add('result-item');
+                    resultItem.innerHTML = `
+                        <p><strong>Name:</strong> ${person.name}</p>
+                        <p><strong>Location:</strong> ${person.location}</p>
+                        <p><strong>Status:</strong> ${person.status}</p>
+                    `;
+                    resultsDiv.appendChild(resultItem);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>No matches found. Please try again.</p>";
+            }
+        });
+    </script>
+</body>
+</html>

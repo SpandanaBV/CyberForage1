@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Assistance</title>
+    <link rel="stylesheet" href="recovery.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Recovery Assistance</h1>
+        <p>Get help with recovery efforts and rebuilding your life after the disaster.</p>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h2>Provide Assistance or Request Help</h2>
+            <p>If you're in need of recovery assistance or would like to donate, please fill out the form below.</p>
+
+            <form class="request-form">
+                <label for="help-type">Select Assistance Type:</label>
+                <select id="help-type" name="help-type">
+                    <option value="donate">Donate Supplies</option>
+                    <option value="need-help">Request Help</option>
+                </select>
+
+                <label for="description">Description of Need/Offer:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Provide details about the help or supplies"></textarea>
+
+                <label for="location">Location (Automatically Detected):</label>
+                <input type="text" id="location" name="location" readonly />
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>How You Can Help</h2>
+            <ul>
+                <li>Donate food, clothing, and other essential items.</li>
+                <li>Offer shelter and medical supplies to those in need.</li>
+                <li>Volunteer your time to help affected communities.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Connect with Donors and Volunteers</h2>
+            <p>Our platform helps connect people in need with donors and volunteers in their area. Together, we can rebuild lives and communities.</p>
+            <a href="donors.html" class="btn donate-btn">Donate Supplies & Become a Volunteer</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if geolocation is supported
+        if ("geolocation" in navigator) {
+            // Get the user's current position
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // Get latitude and longitude
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                // Set the location input field with latitude and longitude
+                document.getElementById('location').value = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            }, function(error) {
+                // Handle geolocation error
+                console.error("Geolocation error: " + error.message);
+                alert("Unable to retrieve your location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Location Map</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .legend {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .legend h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+
+        .legend ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .legend li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .legend span {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .safe {
+            background: green;
+        }
+
+        .danger {
+            background: red;
+        }
+
+        .your-location {
+            background: blue;
+        }
+
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            color: white;
+            z-index: 1000;
+        }
+
+        .controls label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .controls input, .controls select {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 5px;
+            border-radius: 3px;
+            border: none;
+        }
+
+        .controls button {
+            width: 100%;
+            padding: 7px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #218838;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+    <div id="map"></div>
+
+    <div class="legend">
+        <h2>Legend</h2>
+        <ul>
+            <li><span class="safe"></span> Safety Zones</li>
+            <li><span class="danger"></span> Danger Zones</li>
+            <li><span class="your-location"></span> Your Location</li>
+        </ul>
+    </div>
+
+    <div class="controls">
+        <h2>Add Marker</h2>
+        <button id="liveLocation">Live Location</button>
+        <label for="type">Marker Type:</label>
+        <select id="type">
+            <option value="safe">Safety Zone</option>
+            <option value="danger">Danger Zone</option>
+            <option value="your-location">Your Location</option>
+        </select>
+        <label for="top">Top Position (%):</label>
+        <input type="number" id="top" min="0" max="100" placeholder="e.g., 50">
+        <label for="left">Left Position (%):</label>
+        <input type="number" id="left" min="0" max="100" placeholder="e.g., 50">
+        <button id="addMarker">Add Marker</button>
+    </div>
+
+    <script>
+        const map = L.map('map').setView([20.5937, 78.9629], 5); // Default to India
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let marker;
+
+        document.getElementById('liveLocation').addEventListener('click', () => {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                map.setView([latitude, longitude], 13);
+
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([latitude, longitude]).addTo(map)
+                    .bindPopup('Your Location').openPopup();
+            }, () => {
+                alert('Unable to retrieve your location');
+            });
+        });
+
+        let zoneCounter = 0;
+        const addMarkerButton = document.getElementById('addMarker');
+
+        addMarkerButton.addEventListener('click', () => {
+            const type = document.getElementById('type').value;
+            const top = document.getElementById('top').value;
+            const left = document.getElementById('left').value;
+
+            if (top && left) {
+                zoneCounter++; // Increment the counter each time a marker is added
+
+                const markerCircle = document.createElement('div');
+                markerCircle.style.position = 'absolute';
+                markerCircle.style.top = `${top}%`;
+                markerCircle.style.left = `${left}%`;
+                markerCircle.style.width = '100px';
+                markerCircle.style.height = '100px';
+                markerCircle.style.borderRadius = '50%';
+                markerCircle.style.background = type === 'safe' ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
+                markerCircle.style.color = 'white';
+
+                document.body.appendChild(markerCircle);
+            } else {
+                alert('Please enter valid top and left positions.');
+            }
+        });
+    </script>
+</body>
+</html>

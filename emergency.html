@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Check-In & Kits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            background-color: #0a1128;
+            line-height: 1.6;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .status-button, .kit-button {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .section {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Emergency Check-In & Kits</h1>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-center mb-4">
+            <button class="btn btn-outline-primary me-2" onclick="scrollToSection('checkin-section')">Emergency Check-In</button>
+            <button class="btn btn-outline-secondary" onclick="scrollToSection('kits-section')">Emergency Kits</button>
+        </div>
+
+        <!-- Emergency Check-In Section -->
+        <div class="section" id="checkin-section">
+            <h2>Emergency Check-In</h2>
+            <form id="checkInForm">
+                <div class="mb-3">
+                    <label for="status" class="form-label">Select Your Status</label>
+                    <select class="form-select" id="status" name="status" required>
+                        <option value="">Choose...</option>
+                        <option value="safe">Safe</option>
+                        <option value="needs_help">Needs Help</option>
+                        <option value="unreachable">Unreachable</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="3" placeholder="Add a custom message..."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="shareLocation" name="shareLocation">
+                        <label class="form-check-label" for="shareLocation">Share my current location</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary status-button">Update Status</button>
+            </form>
+
+            <div id="responseMessage" class="alert mt-4 d-none" role="alert"></div>
+        </div>
+
+        <!-- Emergency Kits Section -->
+        <div class="section" id="kits-section">
+            <h2>Emergency Kits</h2>
+            <p>Prepare essential survival kits tailored to your needs. Select a category below to get a checklist:</p>
+
+            <form id="kitForm">
+                <div class="mb-3">
+                    <label for="kitType" class="form-label">Select Kit Type</label>
+                    <select class="form-select" id="kitType" name="kitType" required>
+                        <option value="">Choose...</option>
+                        <option value="basic">Basic Survival Kit</option>
+                        <option value="medical">Medical Kit</option>
+                        <option value="family">Family Emergency Kit</option>
+                        <option value="pet">Pet Emergency Kit</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-secondary kit-button" onclick="generateChecklist()">Get Checklist</button>
+            </form>
+
+            <div id="kitChecklist" class="mt-4 d-none">
+                <h4>Checklist:</h4>
+                <ul id="checklistItems" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('checkInForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const status = document.getElementById('status').value;
+            const message = document.getElementById('message').value;
+            const shareLocation = document.getElementById('shareLocation').checked;
+
+            // Simulating a form submission
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.classList.remove('d-none', 'alert-success', 'alert-danger');
+
+            if (status) {
+                responseMessage.textContent = `Status updated successfully: ${status}.` + (shareLocation ? " Location shared." : "");
+                responseMessage.classList.add('alert-success');
+            } else {
+                responseMessage.textContent = "Please select a status.";
+                responseMessage.classList.add('alert-danger');
+            }
+        });
+
+        function generateChecklist() {
+            const kitType = document.getElementById('kitType').value;
+            const checklistItems = document.getElementById('checklistItems');
+            const kitChecklist = document.getElementById('kitChecklist');
+
+            checklistItems.innerHTML = '';
+
+            if (kitType) {
+                kitChecklist.classList.remove('d-none');
+                let items = [];
+
+                switch (kitType) {
+                    case 'basic':
+                        items = ["Water (1 gallon per person per day)", "Non-perishable food", "Flashlight and extra batteries", "First aid kit", "Whistle", "Dust masks", "Plastic sheeting and duct tape"];
+                        break;
+                    case 'medical':
+                        items = ["Bandages", "Antiseptic wipes", "Thermometer", "Prescription medications", "Pain relievers", "Tweezers", "Gloves"];
+                        break;
+                    case 'family':
+                        items = ["Family contact information", "Extra clothing", "Blankets", "Games/toys for children", "Important documents (copies)", "Portable phone chargers"];
+                        break;
+                    case 'pet':
+                        items = ["Pet food", "Collar and leash", "Pet medications", "Pet ID", "Waste bags", "Comfort items for pets"];
+                        break;
+                }
+
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    li.classList.add('list-group-item');
+                    checklistItems.appendChild(li);
+                });
+            } else {
+                kitChecklist.classList.add('d-none');
+                alert('Please select a kit type.');
+            }
+        }
+    </script>
+</body>
+</html>

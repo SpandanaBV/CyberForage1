@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect with Donors and Volunteers</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px 10px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .action-button {
+            padding: 15px 30px;
+            font-size: 1em;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #218838;
+        }
+
+        .form-container {
+            display: none;
+            margin-top: 30px;
+            text-align: left;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        button.submit-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML Structure -->
+    <header>
+        <h1>Connect with Donors and Volunteers</h1>
+        <p>
+            Our platform helps connect people in need with donors and volunteers in their area. 
+            Together, we can rebuild lives and communities.
+        </p>
+    </header>
+    <main>
+        <div class="actions">
+            <button id="donateButton" class="action-button">Donate Supplies</button>
+            <button id="volunteerButton" class="action-button">Become a Volunteer</button>
+        </div>
+
+        <!-- Donor Form -->
+        <div id="donorForm" class="form-container">
+            <h3>Donor Information</h3>
+            <form>
+                <label for="donorName">Full Name:</label>
+                <input type="text" id="donorName" placeholder="Enter your name" required>
+
+                <label for="donorItem">Item to Donate:</label>
+                <input type="text" id="donorItem" placeholder="Enter the item(s) to donate" required>
+
+                <label for="donorLocation">Pickup/Drop-off Location:</label>
+                <input type="text" id="donorLocation" placeholder="Enter location" required>
+
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+
+        <!-- Volunteer Form -->
+        <div id="volunteerForm" class="form-container">
+            <h3>Volunteer Information</h3>
+            <form>
+                <label for="volunteerName">Full Name:</label>
+                <input type="text" id="volunteerName" placeholder="Enter your name" required>
+
+                <label for="volunteerEmail">Email Address:</label>
+                <input type="email" id="volunteerEmail" placeholder="Enter your email" required>
+
+                <label for="volunteerSkills">Skills/Expertise:</label>
+                <textarea id="volunteerSkills" rows="4" placeholder="Enter your skills or expertise" required></textarea>
+
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Disaster Management Platform</p>
+    </footer>
+
+    <script>
+        // JavaScript Interactivity
+        const donateButton = document.getElementById('donateButton');
+        const volunteerButton = document.getElementById('volunteerButton');
+        const donorForm = document.getElementById('donorForm');
+        const volunteerForm = document.getElementById('volunteerForm');
+
+        // Show Donor Form
+        donateButton.addEventListener('click', function () {
+            donorForm.style.display = 'block';
+            volunteerForm.style.display = 'none';
+        });
+
+        // Show Volunteer Form
+        volunteerButton.addEventListener('click', function () {
+            volunteerForm.style.display = 'block';
+            donorForm.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reconnecting Families and Communities</title>
+    <link rel="stylesheet" href="communication.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <header>
+        <h1>Reconnecting Families and Communities</h1>
+        <p>Helping you reconnect with loved ones and your community after a disaster. Request communication assistance and locate your family members.</p>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h2>Request Communication Assistance</h2>
+            <p>If you need help reconnecting with your family or community members, please fill out the form below. We'll assist you in restoring lost contact.</p>
+
+            <form class="communication-form">
+                <label for="request-type">Type of Assistance:</label>
+                <select id="request-type" name="request-type">
+                    <option value="reconnect-family">Reconnect with Family</option>
+                    <option value="reconnect-community">Reconnect with Community</option>
+                    <option value="communication-support">General Communication Support</option>
+                </select>
+
+                <label for="location">Location (Automatically Detected):</label>
+                <input type="text" id="location" name="location" readonly />
+
+                <button type="submit">Request Assistance</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Family Members' Contact Information</h2>
+            <p>If you have family members who are lost or need to reconnect, please add their contact details below.</p>
+            
+            <form id="family-form" class="family-form">
+                <label for="family-name">Family Member's Name:</label>
+                <input type="text" id="family-name" name="family-name" placeholder="Enter name" required />
+
+                <label for="relationship">Relationship:</label>
+                <input type="text" id="relationship" name="relationship" placeholder="Enter relationship" required />
+
+                <label for="family-phone">Phone Number:</label>
+                <input type="tel" id="family-phone" name="family-phone" placeholder="Enter phone number" required />
+
+                <button type="button" id="add-family">Add Family Member</button>
+            </form>
+
+            <div id="family-members-list" class="family-members-list">
+                <!-- Family members will be listed here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Emergency Contacts</h2>
+            <p>If you need immediate assistance, contact these emergency services to help in locating family members or get help restoring communication:</p>
+            <ul>
+                <li><strong>National Disaster Hotline:</strong> 800-123-4567</li>
+                <li><strong>Search and Rescue Teams:</strong> 123-456-7890</li>
+                <li><strong>Community Support Centers:</strong> 800-987-6543</li>
+                <li><strong>Police Department:</strong> 911</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Check if geolocation is supported
+        if ("geolocation" in navigator) {
+            // Get the user's current position
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // Get latitude and longitude
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                
+                // Set the location input field with latitude and longitude
+                document.getElementById('location').value = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            }, function(error) {
+                // Handle geolocation error
+                console.error("Geolocation error: " + error.message);
+                alert("Unable to retrieve your location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        // Add family member to the list
+        document.getElementById('add-family').addEventListener('click', function() {
+            const name = document.getElementById('family-name').value;
+            const relationship = document.getElementById('relationship').value;
+            const phone = document.getElementById('family-phone').value;
+            
+            if (name && relationship && phone) {
+                const familyList = document.getElementById('family-members-list');
+
+                // Create a new list item with the family member's details
+                const familyItem = document.createElement('div');
+                familyItem.classList.add('family-member-item');
+                familyItem.innerHTML = `
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Relationship:</strong> ${relationship}</p>
+                    <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+                `;
+                
+                // Append the new family member item to the list
+                familyList.appendChild(familyItem);
+                
+                // Clear the form fields
+                document.getElementById('family-form').reset();
+            } else {
+                alert("Please fill out all the fields.");
+            }
+        });
+    </script>
+</body>
+</html>
